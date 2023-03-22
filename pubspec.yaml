@@ -1,5 +1,5 @@
-name: food_delivery
-description: A new Flutter project.
+name: waiter_app
+description: A waiter app for restaurant
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -27,12 +27,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  http:
+  http: ^0.13.3
+  flutter_bloc: ^8.0.1
   flutter:
     sdk: flutter
   get: ^4.1.4
   dots_indicator: ^2.1.0
   provider:
+  intl:
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,6 +44,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

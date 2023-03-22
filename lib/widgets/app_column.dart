@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/utils/colors.dart';
-import 'package:food_delivery/utils/dimensions.dart';
-import 'package:food_delivery/widgets/big_text.dart';
-import 'package:food_delivery/widgets/icon_and_text_widget.dart';
-import 'package:food_delivery/widgets/small_text.dart';
+import 'package:waiter_app/utils/colors.dart';
+import 'package:waiter_app/utils/dimensions.dart';
+import 'package:waiter_app/widgets/big_text.dart';
+import 'package:waiter_app/widgets/icon_and_text_widget.dart';
+import 'package:waiter_app/widgets/small_text.dart';
 
 class AppColumn extends StatelessWidget {
   final int rating;
@@ -62,12 +62,12 @@ class AppColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconAndTextWidget(
-                icon: Icons.circle_sharp,
+                icon: category.toLowerCase() == "recommended" ? Icons.recommend : Icons.stars_rounded,
                 text:
                     "${category[0].toUpperCase()}${category.substring(1).toLowerCase()}",
                 iconColor: AppColors.iconColor1),
             IconAndTextWidget(
-                icon: Icons.paid,
+                icon: Icons.sell,
                 text: "$price บาท",
                 iconColor: AppColors.iconColor2),
           ],

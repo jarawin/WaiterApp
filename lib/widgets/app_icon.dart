@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/utils/dimensions.dart';
+import 'package:waiter_app/utils/dimensions.dart';
 
 class AppIcon extends StatelessWidget {
   final IconData icon;

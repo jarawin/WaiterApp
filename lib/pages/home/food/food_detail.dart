@@ -1,28 +1,31 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:food_delivery/models/food.dart';
-import 'package:food_delivery/provider/cartProvider.dart';
-import 'package:food_delivery/utils/dimensions.dart';
-import 'package:food_delivery/widgets/app_column.dart';
-import 'package:food_delivery/widgets/app_icon.dart';
-import 'package:food_delivery/widgets/big_text.dart';
-import 'package:food_delivery/widgets/expandable_text_widget.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/colors.dart';
-import '../../widgets/icon_and_text_widget.dart';
-import '../cart/cart_page.dart';
+import 'package:waiter_app/models/food.dart';
+import 'package:waiter_app/providers/cartProvider.dart';
+import 'package:waiter_app/pages/cart/cart_page.dart';
+import 'package:waiter_app/widgets/app_column.dart';
+import 'package:waiter_app/widgets/app_icon.dart';
+import 'package:waiter_app/widgets/big_text.dart';
+import 'package:waiter_app/widgets/expandable_text_widget.dart';
+import 'package:waiter_app/utils/config.dart';
+import 'package:waiter_app/utils/dimensions.dart';
+import 'package:waiter_app/utils/colors.dart';
 
-class PopularFoodDetail extends StatefulWidget {
-  final String URL_BASE = "http://localhost:5390";
+
+
+class FoodDetail extends StatefulWidget {
+  final String URL_BASE = Config.URL_BASE;
   final Food food;
-  const PopularFoodDetail({Key? key, required this.food}) : super(key: key);
+  const FoodDetail({Key? key, required this.food}) : super(key: key);
 
   @override
-  State<PopularFoodDetail> createState() => _PopularFoodDetailState();
+  State<FoodDetail> createState() => _FoodDetailState();
 }
 
-class _PopularFoodDetailState extends State<PopularFoodDetail> {
+class _FoodDetailState extends State<FoodDetail> {
   int _quantity = 1;
 
   @override
@@ -41,10 +44,8 @@ class _PopularFoodDetailState extends State<PopularFoodDetail> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          // image: AssetImage("assets/images/food1.jpg"))),
-                          // image: NetworkImage(
-                          //     "${widget.URL_BASE}/${widget.food.image}"))),
-                          image: NetworkImage("${widget.food.image}"))),
+                          image: NetworkImage(
+                              "${widget.URL_BASE}/${widget.food.image}"))),
                 )),
             Positioned(
                 top: Dimensions.height45,
@@ -67,7 +68,23 @@ class _PopularFoodDetailState extends State<PopularFoodDetail> {
                           // Get.to(() => const CartPage());
                         },
                         child:
-                            const AppIcon(icon: Icons.shopping_cart_outlined))
+                            Stack(
+                              children: [
+                                AppIcon(icon: Icons.shopping_cart_outlined),
+                                cartService.getQuantity(widget.food) >= 1 ?
+                                  const Positioned(
+                                    top:0,
+                                    right:0,
+                                    child: AppIcon(icon: Icons.circle, size:20, iconColor: Colors.transparent, backgroundColor: AppColors.mainColor,)
+                                  ):Container(),
+                                cartService.getQuantity(widget.food) >= 1 ?
+                                 Positioned(
+                                    top:3,
+                                    right:3,
+                                    child: Center(child: BigText(text: cartService.getQuantity(widget.food).toString(), size: 12, color: Colors.white))
+                                ):Container(),
+                              ],
+                            ))
                   ],
                 )),
             Positioned(
@@ -142,10 +159,12 @@ class _PopularFoodDetailState extends State<PopularFoodDetail> {
                             setState(() {
                               if (_quantity > 1) {
                                 _quantity--;
+                              } else {
+                                cartService.decreaseQuantity(widget.food);
                               }
                             });
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.remove,
                             color: AppColors.signColor,
                           ),

@@ -1,37 +1,87 @@
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:food_delivery/models/food.dart';
-import 'package:food_delivery/pages/cart/cart_page.dart';
-import 'package:food_delivery/pages/food/popular_food_detail.dart';
-import 'package:food_delivery/pages/home/main_food_page.dart';
-import 'package:food_delivery/provider/cartProvider.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:waiter_app/pages/login/LoginPage.dart';
+
+import 'package:waiter_app/pages/waiter/call_waiter_screen.dart';
+import 'package:waiter_app/pages/home/home_page.dart';
+import 'package:waiter_app/pages/order/order_food_screen.dart';
+import 'package:waiter_app/pages/point/point_page_screen.dart';
+import 'package:waiter_app/pages/setting/setting_page_screen.dart';
+import 'package:waiter_app/providers/cartProvider.dart';
+import 'package:waiter_app/providers/customerProvider.dart';
+import 'package:waiter_app/providers/foodProvider.dart';
+
+import 'package:waiter_app/utils/colors.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ListenableProvider(create: (context) => CartService()),
+      ListenableProvider(create: (context) => FoodProvider()),
+      ListenableProvider(create: (context) => CustomerProvider()),
+    ],
+    child: GetMaterialApp(
+      title: 'Waiter App',
+      initialRoute: '/',
+      routes: {
+        '/home': (context) => const WaiterApp(),
+        '/point': (context) => const PointPage(),
+        '/order': (context) => const OrderFood(),
+        '/waiter': (context) => const CallWaiter(),
+        '/setting': (context) => const SettingPage(),
+      },
+      home: const CustomerLoginPage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.lightBlue,
+      ),
+    ),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+class WaiterApp extends StatefulWidget {
+  const WaiterApp({Key? key}) : super(key: key);
+
+  @override
+  State<WaiterApp> createState() => _WaiterAppState();
+}
+
+class _WaiterAppState extends State<WaiterApp> {
+  int _selectedPageIndex = 0;
+
+  final _pages = [
+    {'page': const HomePage(), 'title': 'Home', 'icon': Icons.home},
+    {'page': const PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
+    {'page': const OrderFood(), 'title': 'Order', 'icon': Icons.restaurant_menu},
+    {'page': const CallWaiter(), 'title': 'Waiter', 'icon': Icons.room_service},
+    {'page': const SettingPage(), 'title': 'Setting', 'icon': Icons.settings},
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return ListenableProvider(
-        create: (context) => CartService(),
-        child: GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          // home: const CartPage()));
-
-          home: const MainFoodPage(),
-        ));
-    // home: const PopularFoodDetail());
+    return Scaffold(
+      body: _pages[_selectedPageIndex]['page'] as Widget?,
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: AppColors.mainColor,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedPageIndex,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        items: _pages.map((page) {
+          return BottomNavigationBarItem(
+            icon: Icon(page['icon'] as IconData?),
+            label: page['title'] as String?,
+          );
+        }).toList(),
+        onTap: (index) {
+          setState(() {
+            _selectedPageIndex = index;
+          });
+        },
+      ),
+    );
   }
 }

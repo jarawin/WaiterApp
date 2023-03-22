@@ -1,12 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:food_delivery/models/food.dart';
-import 'package:food_delivery/provider/cartProvider.dart';
-import 'package:food_delivery/utils/colors.dart';
-import 'package:food_delivery/utils/dimensions.dart';
-import 'package:food_delivery/widgets/big_text.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/cart.dart';
+import 'package:waiter_app/providers/cartProvider.dart';
+import 'package:waiter_app/utils/colors.dart';
+import 'package:waiter_app/utils/config.dart';
+import 'package:waiter_app/utils/dimensions.dart';
+import 'package:waiter_app/widgets/big_text.dart';
+import 'package:waiter_app/models/cart.dart';
 
 class CartItemList extends StatefulWidget {
   final int index;
@@ -19,7 +21,7 @@ class CartItemList extends StatefulWidget {
 class _CartItemListState extends State<CartItemList> {
   List<Cart> _cartList = [];
   int _quantity = 1;
-  final String URL_BASE = "http://localhost:5390";
+  final String URL_BASE = Config.URL_BASE;
 
   @override
   void initState() {
@@ -35,9 +37,9 @@ class _CartItemListState extends State<CartItemList> {
   Widget build(BuildContext context) {
     return Consumer<CartService>(builder: (_, cartService, __) {
       _cartList = cartService.getCart();
-      _quantity = _cartList[widget.index].quantity ?? 1;
+      _quantity = _cartList[widget.index].quantity;
 
-      return Container(
+      return SizedBox(
         height: 100,
         width: double.maxFinite,
         child: Row(
@@ -50,10 +52,8 @@ class _CartItemListState extends State<CartItemList> {
               ),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      // image: NetworkImage(
-                      //       "${URL_BASE}/${_cartList[widget.index].food.image}"),
-                      image:
-                          NetworkImage("${_cartList[widget.index].food.image}"),
+                      image: NetworkImage(
+                          "$URL_BASE/${_cartList[widget.index].food.image}"),
                       fit: BoxFit.cover),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(Dimensions.radius20)),
@@ -62,7 +62,7 @@ class _CartItemListState extends State<CartItemList> {
               width: Dimensions.width20,
             ),
             Expanded(
-                child: Container(
+                child: SizedBox(
               height: Dimensions.height20 * 5,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +76,7 @@ class _CartItemListState extends State<CartItemList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         BigText(
-                          text: "\$ 23",
+                          text: "\฿ ${_cartList[widget.index].getSumPrice()}",
                           color: Colors.red,
                         ),
                         Container(

@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Food {
   final String id;
   final String name;
@@ -17,18 +19,7 @@ class Food {
     required this.category,
   });
 
-  // static Food fromJson(json) => Food(
-  //       id: json['_id'],
-  //       name: json['name'],
-  //       image: json['image'],
-  //       description: json['description'],
-  //       price: json['price'],
-  //       rating: json['rate'],
-  //       category: json['category'],
-  //     );
-
   factory Food.fromJson(Map<String, dynamic> json) {
-    // print(json['name']);
     return Food(
       id: json['_id'],
       name: json['name'],

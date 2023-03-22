@@ -1,18 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:food_delivery/models/cart.dart';
-import 'package:food_delivery/pages/cart/cart_item_list.dart';
-import 'package:food_delivery/utils/colors.dart';
-import 'package:food_delivery/utils/dimensions.dart';
-import 'package:food_delivery/widgets/app_icon.dart';
-import 'package:food_delivery/widgets/big_text.dart';
-import 'package:food_delivery/widgets/small_text.dart';
-import 'package:provider/provider.dart';
+// ignore_for_file: non_constant_identifier_names
 
-import '../../provider/cartProvider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'dart:convert';
+
+import 'package:waiter_app/models/cart.dart';
+import 'package:waiter_app/pages/cart/cart_item_list.dart';
+import 'package:waiter_app/utils/colors.dart';
+import 'package:waiter_app/utils/config.dart';
+import 'package:waiter_app/utils/dimensions.dart';
+import 'package:waiter_app/widgets/app_icon.dart';
+import 'package:waiter_app/widgets/big_text.dart';
+import 'package:waiter_app/providers/cartProvider.dart';
+
 
 class CartPage extends StatefulWidget {
-  final String URL_BASE = "http://localhost:5390";
+  final String URL_BASE = Config.URL_BASE;
   const CartPage({Key? key}) : super(key: key);
 
   @override
@@ -22,10 +27,47 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<Cart> _cartList = [];
 
+
+  Widget _item_map() {
+    if (_cartList.isNotEmpty) {
+      return ListView.builder(
+        itemCount: _cartList.length,
+        itemBuilder: (context, index) {
+          return CartItemList(
+            index: index,
+          );
+        },
+      );
+    } else {
+      return const Center(
+        child: Text("No items in cart"),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return Consumer<CartService>(builder: (_, cartService, __) {
       _cartList = cartService.getCart();
+
+      Future<void> addOrderToServer() async {
+        final response = await http.post(
+          Uri.parse(widget.URL_BASE),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(_cartList),
+        );
+
+        if (response.statusCode == 200) {
+          print('Data successfully posted');
+          cartService.clearCart();
+          print('Clear cart success');
+        } else {
+          print('Failed to post data: ${response.statusCode}');
+        }
+      }
 
       return Scaffold(
         body: Stack(
@@ -45,35 +87,33 @@ class _CartPageState extends State<CartPage> {
                         icon: Icons.arrow_back_ios,
                         iconColor: Colors.white,
                         backgroundColor: AppColors.mainColor,
-                        size: Dimensions.icon30,
-                      ),
-                    ),
-                    SizedBox(
-                      width: Dimensions.width20 * 5,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.back();
-                        Get.back();
-                      },
-                      child: AppIcon(
-                        icon: Icons.home,
-                        iconColor: Colors.white,
-                        backgroundColor: AppColors.mainColor,
-                        size: Dimensions.icon30,
+                        size: Dimensions.icon40,
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: AppIcon(
-                        icon: Icons.shopping_cart,
-                        iconColor: Colors.white,
-                        backgroundColor: AppColors.mainColor,
-                        size: Dimensions.icon30,
-                      ),
-                    ),
+                        onTap: () {
+                          Get.back();
+                        },
+                        child:
+                        Stack(
+                          children: [
+                            AppIcon(icon: Icons.shopping_cart_outlined,iconColor: Colors.white,
+                              backgroundColor: AppColors.mainColor,
+                              size: Dimensions.icon40,),
+                            cartService.getTotalQuantity() >= 1 ?
+                            const Positioned(
+                                top:0,
+                                right:0,
+                                child: AppIcon(icon: Icons.circle, size:20, iconColor: Colors.transparent, backgroundColor: Colors.white,)
+                            ):Container(),
+                            cartService.getTotalQuantity() >= 1 ?
+                            Positioned(
+                                top:3,
+                                right:3,
+                                child: Center(child: BigText(text: cartService.getTotalQuantity().toInt().toString(), size: 10, color: Colors.black))
+                            ):Container(),
+                          ],
+                        )),
                   ],
                 )),
             Positioned(
@@ -86,19 +126,58 @@ class _CartPageState extends State<CartPage> {
                     top: Dimensions.height15,
                   ),
                   child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      child: ListView.builder(
-                        itemCount: _cartList.length,
-                        itemBuilder: (context, index) {
-                          return CartItemList(
-                            index: index,
-                          );
-                        },
-                      )),
+                      context: context, removeTop: true, child: _item_map()),
                 ))
           ],
         ),
+        bottomNavigationBar: Container(
+            height: Dimensions.hPageView120,
+            padding: EdgeInsets.only(
+                left: Dimensions.width20, right: Dimensions.width20),
+            decoration: BoxDecoration(
+                color: AppColors.buttonBackgroundColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimensions.radius20 * 2),
+                  topRight: Radius.circular(Dimensions.radius20 * 2),
+                )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.width20,
+                        vertical: Dimensions.height20),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                        BorderRadius.circular(Dimensions.radius20)),
+                    child: Row(
+                      children: [
+                        BigText(
+                          text: "\฿ ${cartService.getTotalPrice()}",
+                        ),
+                      ],
+                    )),
+                GestureDetector(
+                  onTap: () {
+                    addOrderToServer();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.width20,
+                        vertical: Dimensions.height20),
+                    child: BigText(
+                      text: "Order now",
+                      color: Colors.white,
+                    ),
+                    decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius:
+                        BorderRadius.circular(Dimensions.radius20)),
+                  ),
+                )
+              ],
+            )),
       );
     });
   }

@@ -1,12 +1,22 @@
 // ignore: file_names
 import "package:flutter/material.dart";
-import "package:food_delivery/models/cart.dart";
-import "package:food_delivery/models/food.dart";
 import "package:get/get.dart";
+import "package:waiter_app/models/cart.dart";
+import "package:waiter_app/models/food.dart";
 
 class CartService extends ChangeNotifier {
-  List<Cart> _cart = [];
+  final List<Cart> _cart = [];
   List<Cart> get cart => _cart;
+  bool _isLogin = false;
+
+  getIsLogin() {
+    return _isLogin;
+  }
+
+  setIsLogin(bool isLogin) {
+    _isLogin = isLogin;
+    notifyListeners();
+  }
 
   void addToCart(Food food, int quantity) {
     if (_cart.any((element) => element.food.id == food.id)) {
@@ -116,6 +126,14 @@ class CartService extends ChangeNotifier {
     double total = 0;
     for (var element in _cart) {
       total += element.food.price * element.quantity;
+    }
+    return total;
+  }
+
+  double getTotalQuantity(){
+    double total = 0;
+    for (var element in _cart) {
+      total += element.quantity;
     }
     return total;
   }

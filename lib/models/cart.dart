@@ -1,4 +1,4 @@
-import 'package:food_delivery/models/food.dart';
+import 'package:waiter_app/models/food.dart';
 
 class Cart {
   final Food food;
@@ -18,5 +18,9 @@ class Cart {
 
   getSumPrice() {
     return quantity * food.price;
+  }
+
+  getSumQuantity(){
+    return quantity;
   }
 }

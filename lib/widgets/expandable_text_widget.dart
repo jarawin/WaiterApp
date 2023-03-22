@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/utils/colors.dart';
-import 'package:food_delivery/utils/dimensions.dart';
-import 'package:food_delivery/widgets/small_text.dart';
+import 'package:waiter_app/utils/colors.dart';
+import 'package:waiter_app/utils/dimensions.dart';
+import 'package:waiter_app/widgets/small_text.dart';
 
 class ExpandableTextWidget extends StatefulWidget {
   final String text;

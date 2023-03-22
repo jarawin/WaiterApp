@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:food_delivery/utils/dimensions.dart';
+import 'package:waiter_app/utils/dimensions.dart';
 
 // ignore: must_be_immutable
 class SmallText extends StatelessWidget {

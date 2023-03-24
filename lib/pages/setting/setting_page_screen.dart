@@ -25,6 +25,7 @@ class SettingPage extends StatelessWidget {
       return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
+            centerTitle: true,
             backgroundColor: AppColors.mainColor,
             // elevation: 1,
             title: BigText(

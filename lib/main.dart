@@ -31,7 +31,8 @@ void main() {
         '/waiter': (context) => const CallWaiter(),
         '/setting': (context) => const SettingPage(),
       },
-      home: const CustomerLoginPage(),
+      home: const WaiterApp(),
+      // home: const CustomerLoginPage(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,

@@ -2,11 +2,13 @@
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:waiter_app/models/cart.dart";
+import "package:waiter_app/models/customer.dart";
 import "package:waiter_app/models/food.dart";
-
+import 'package:waiter_app/providers/customerProvider.dart';
 class CartService extends ChangeNotifier {
   final List<Cart> _cart = [];
   List<Cart> get cart => _cart;
+  var currentPoint = CustomerProvider().point;
 
   void addToCart(Food food, int quantity) {
     if (_cart.any((element) => element.food.id == food.id)) {
@@ -143,5 +145,38 @@ class CartService extends ChangeNotifier {
     } else {
       return 0;
     }
+  }
+  void checksubPoint(double totalPrice){
+    int x = 0;
+     double change = 0;
+    if(currentPoint == 0) {
+      Get.snackbar(
+        "Can't use your point",
+        "Your point is zero",
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 2),
+      );
+    }
+     else if(totalPrice>0 && totalPrice<=currentPoint){
+      change = (currentPoint - totalPrice ) as double;
+      currentPoint = change as int;
+      Get.snackbar(
+        "Using point succeeded",
+        "Your points balance is $currentPoint",
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 2),
+      );
+    }else if(totalPrice>0 && totalPrice>currentPoint){
+      Get.snackbar(
+        "Can't use your point",
+        "Your points are not enough $currentPoint",
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 2),
+      );
+    }
+    notifyListeners();
+  }
+  int getcurrentPoint(){
+    return currentPoint;
   }
 }

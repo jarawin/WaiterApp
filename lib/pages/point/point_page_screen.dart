@@ -1,33 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:waiter_app/pages/home/home_page_body.dart';
+import 'package:waiter_app/providers/customerProvider.dart';
 import 'package:waiter_app/utils/colors.dart';
 import 'package:waiter_app/utils/dimensions.dart';
 import 'package:waiter_app/widgets/big_text.dart';
 import 'package:waiter_app/widgets/small_text.dart';
-
+import 'package:waiter_app/providers/cartProvider.dart';
 class PointPage extends StatelessWidget {
   const PointPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CartService cartService = CartService();
+    int currentPoint = cartService.getcurrentPoint();
+    return Consumer<CustomerProvider>(
+        builder: (_, customerProvider, __) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Customer Info'),
+        centerTitle: true,
+        title: BigText(
+          text: "Point of User",
+          color: Colors.white,
+          size: Dimensions.font20,
+        ),
+        backgroundColor: Color(0xFF89dad0),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 200,
-              height: 200,
+              width: 190,
+              height: 190,
               alignment: Alignment.center,
               child: Text(
-                'point: ', //${Customer.cus[0].point}
+
+                "${currentPoint}", //${Customer.cus[0].point}
                 style: TextStyle(
                   color: Colors.blueAccent[200],
-                  fontSize: 50,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -43,7 +56,7 @@ class PointPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Phone Number: ',//${Customer.cus[0].phone}
+              'Phone Number: ${customerProvider.phone}',//${Customer.cus[0].phone}
 
               style: TextStyle(
                 fontSize: 20,
@@ -55,7 +68,9 @@ class PointPage extends StatelessWidget {
         ),
       ),
     );
+    });
   }
+
 }
 
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:waiter_app/utils/dimensions.dart';
+import 'package:waiter_app/widgets/big_text.dart';
 
 class CallWaiter extends StatelessWidget {
   const CallWaiter({Key? key}) : super(key: key);
@@ -9,7 +11,14 @@ class CallWaiter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Call Employee'),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: BigText(
+            text: "Call Waiter",
+            color: Colors.white,
+            size: Dimensions.font20,
+          ),
+          backgroundColor: Color(0xFF89dad0),
       ),
       body: Center(
         child: Column(
@@ -24,7 +33,7 @@ class CallWaiter extends StatelessWidget {
                 Get.snackbar(
                   "Employee Called",
                   "The employee has been notified.",
-                  snackPosition: SnackPosition.BOTTOM,
+                  snackPosition: SnackPosition.TOP,
                   duration: Duration(seconds: 2),
                 );
                 //_showEmployeeCalledDialog(context);

@@ -13,6 +13,7 @@ class CustomerProvider with ChangeNotifier {
 
   void login(String userId, String phone) {
     _customer = Customer(userId: userId, phone: phone);
+    // _customer = Customer(userId: userId, phone: phone, point: point);
     _isLogin = true;
     notifyListeners();
   }

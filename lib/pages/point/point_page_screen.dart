@@ -10,8 +10,53 @@ class PointPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('หน้าเเต้มของลูกค้า'),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Customer Info'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 200,
+              height: 200,
+              alignment: Alignment.center,
+              child: Text(
+                'point: ', //${Customer.cus[0].point}
+                style: TextStyle(
+                  color: Colors.blueAccent[200],
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100.0),
+                border: Border.all(
+                  color: Color(0xff7E89FC),
+                  style: BorderStyle.solid,
+                  width: 25,
+                ),
+                color: Colors.transparent,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Phone Number: ',//${Customer.cus[0].phone}
+
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey[700],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
+
+
+

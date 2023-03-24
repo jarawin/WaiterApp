@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'dart:async';
 
@@ -28,8 +29,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   bool isLoading = false;
   bool isRequestingOtp = false;
   bool isConfirmingOtp = false;
-
-  CustomerProvider customerProvider = CustomerProvider();
 
   void resetState() {
     setState(() {
@@ -125,7 +124,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       showSnackBar("Error: ${error.toString()}");
     }
   }
-
   Future<void> confirmOtp() async {
     if (!isOtpValid()) {
       showSnackBar("Invalid OTP");
@@ -148,7 +146,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       );
 
       var data = jsonDecode(response.body);
-      customerProvider.login(data['userId'], data['phone'], data['point']);
+      Provider.of<CustomerProvider>(context, listen: false)
+          .login(data['userId'], data['phone'], data['point']);
 
       setState(() {
         quotaSentOTP = 0;
@@ -170,6 +169,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       showSnackBar("Error: ${error.toString()}");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

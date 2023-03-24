@@ -9,19 +9,17 @@ import 'package:waiter_app/widgets/account_widget.dart';
 import 'package:waiter_app/widgets/app_icon.dart';
 import 'package:waiter_app/widgets/big_text.dart';
 
-
-
 class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
 
+  String substringWithEllipsis(String inputString, int n) {
+    if (inputString.length <= n) return inputString;
+    return inputString.substring(0, n) + '...';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<CustomerProvider>(
-        builder: (_, customerProvider, __) {
-          print("userId: ${customerProvider.userId}");
-          print("phone: ${customerProvider.phone}");
-          print("point: ${customerProvider.point}");
-
+    return Consumer<CustomerProvider>(builder: (_, customerProvider, __) {
       return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -54,15 +52,13 @@ class SettingPage extends StatelessWidget {
                 AccountWidget(
                   appIcon: AppIcon(
                     icon: Icons.person,
-                    backgroundColor: AppColors.mainColor,
+                    backgroundColor: AppColors.textColor,
                     iconColor: Colors.white,
                     iconSize: Dimensions.height10 * 5 / 2,
                     size: Dimensions.height10 * 5,
                   ),
                   bigText: BigText(
-                    text: customerProvider?.userId ?? "UserId not found",
-                    // color: AppColors.mainColor,
-                    // size: Dimensions.font20,
+                    text: substringWithEllipsis(customerProvider.userId, 20),
                   ),
                 ),
                 // phone
@@ -71,16 +67,14 @@ class SettingPage extends StatelessWidget {
                 ),
                 AccountWidget(
                   appIcon: AppIcon(
-                    icon: Icons.person,
-                    backgroundColor: AppColors.mainColor,
+                    icon: Icons.phone,
+                    backgroundColor: AppColors.yellowColor,
                     iconColor: Colors.white,
                     iconSize: Dimensions.height10 * 5 / 2,
                     size: Dimensions.height10 * 5,
                   ),
                   bigText: BigText(
-                    text: "Account",
-                    // color: AppColors.mainColor,
-                    // size: Dimensions.font20,
+                    text: customerProvider.phone,
                   ),
                 ),
                 // point
@@ -89,23 +83,22 @@ class SettingPage extends StatelessWidget {
                 ),
                 AccountWidget(
                   appIcon: AppIcon(
-                    icon: Icons.person,
-                    backgroundColor: AppColors.mainColor,
+                    icon: Icons.credit_score,
+                    backgroundColor: AppColors.yellowColor,
                     iconColor: Colors.white,
                     iconSize: Dimensions.height10 * 5 / 2,
                     size: Dimensions.height10 * 5,
                   ),
                   bigText: BigText(
-                    text: "Account",
-                    // color: AppColors.mainColor,
-                    // size: Dimensions.font20,
+                    text: "${customerProvider.point.toString()} point",
                   ),
                 ),
                 // logout
                 Container(
                   width: double.maxFinite,
-                  height: Dimensions.height35,
+                  height: Dimensions.height45,
                   margin: EdgeInsets.only(
+                    top: Dimensions.height20,
                     left: Dimensions.width100,
                     right: Dimensions.width100,
                   ),

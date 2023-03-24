@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waiter_app/pages/home/home_page_body.dart';
+import 'package:waiter_app/providers/customerProvider.dart';
 import 'package:waiter_app/utils/colors.dart';
 import 'package:waiter_app/utils/dimensions.dart';
 import 'package:waiter_app/widgets/big_text.dart';

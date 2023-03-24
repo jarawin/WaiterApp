@@ -14,19 +14,20 @@ import 'package:waiter_app/providers/foodProvider.dart';
 
 import 'package:waiter_app/utils/colors.dart';
 
+
 void main() {
   runApp(MultiProvider(
     providers: [
-      ListenableProvider(create: (context) => CartService()),
-      ListenableProvider(create: (context) => FoodProvider()),
-      ListenableProvider(create: (context) => CustomerProvider()),
+      ChangeNotifierProvider(create: (context) => CustomerProvider()),
+      ChangeNotifierProvider(create: (context) => CartService()),
+      ChangeNotifierProvider(create: (context) => FoodProvider()),
     ],
     child: GetMaterialApp(
       title: 'Waiter App',
       initialRoute: '/',
       routes: {
         '/home': (context) => const WaiterApp(),
-        '/point': (context) => const PointPage(),
+        '/point': (context) => PointPage(),
         '/order': (context) => const OrderFood(),
         '/waiter': (context) => const CallWaiter(),
         '/setting': (context) => const SettingPage(),
@@ -40,6 +41,7 @@ void main() {
   ));
 }
 
+
 class WaiterApp extends StatefulWidget {
   const WaiterApp({Key? key}) : super(key: key);
 
@@ -52,7 +54,7 @@ class _WaiterAppState extends State<WaiterApp> {
 
   final _pages = [
     {'page': const HomePage(), 'title': 'Home', 'icon': Icons.home},
-    {'page': const PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
+    {'page':  PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
     {
       'page': const OrderFood(),
       'title': 'Order',

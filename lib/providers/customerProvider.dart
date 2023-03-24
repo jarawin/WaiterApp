@@ -12,6 +12,9 @@ class CustomerProvider with ChangeNotifier {
   String get phone => _phone;
   int get point => _point;
 
+  getUserId() {
+    return _userId;
+  }
 
   void login(String userId, String phone, int point) {
     print("login: $userId, $phone, $point");
@@ -19,9 +22,8 @@ class CustomerProvider with ChangeNotifier {
     _userId = userId;
     _phone = phone;
     _point = point;
-
-    print("after login: $_userId, $_phone, $_point");
     _isLogin = true;
+
     notifyListeners();
   }
 

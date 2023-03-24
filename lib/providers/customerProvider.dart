@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class CustomerProvider with ChangeNotifier {
   bool _isLogin = false;
   String _userId = "";
-  String _phone = "";
-  int _point = 0;
+  String _phone = "099999999";
+  int _point = 200;
 
   bool get isLogin => _isLogin;
   String get userId => _userId;
@@ -35,4 +35,5 @@ class CustomerProvider with ChangeNotifier {
     _isLogin = false;
     notifyListeners();
   }
+
 }

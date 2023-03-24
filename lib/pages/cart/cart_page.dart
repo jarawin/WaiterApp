@@ -5,9 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'dart:convert';
-
+import 'package:waiter_app/providers/cartProvider.dart';
 import 'package:waiter_app/models/cart.dart';
 import 'package:waiter_app/pages/cart/cart_item_list.dart';
+import 'package:waiter_app/providers/customerProvider.dart';
 import 'package:waiter_app/utils/colors.dart';
 import 'package:waiter_app/utils/config.dart';
 import 'package:waiter_app/utils/dimensions.dart';
@@ -18,6 +19,7 @@ import 'package:waiter_app/widgets/small_text.dart';
 
 class CartPage extends StatefulWidget {
   final String URL_BASE = Config.URL_BASE;
+
   const CartPage({Key? key}) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<Cart> _cartList = [];
+
 
   Widget _item_map() {
     if (_cartList.isNotEmpty) {
@@ -55,6 +58,7 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<CartService>(builder: (_, cartService, __) {
       _cartList = cartService.getCart();
 
@@ -73,6 +77,7 @@ class _CartPageState extends State<CartPage> {
           print('Failed to post data: ${response.statusCode}');
         }
       }
+
 
       return Scaffold(
         body: Stack(
@@ -177,6 +182,24 @@ class _CartPageState extends State<CartPage> {
                         ),
                       ],
                     )),
+                GestureDetector(
+                  onTap: () {
+                    cartService.checksubPoint(cartService.getTotalPrice());//addOrderToServer();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.width20,
+                        vertical: Dimensions.height20),
+                    child: BigText(
+                      text: "Order by point",
+                      color: Colors.white,
+                    ),
+                    decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius:
+                        BorderRadius.circular(Dimensions.radius20)),
+                  ),
+                ),
                 GestureDetector(
                   onTap: () {
                     addOrderToServer();

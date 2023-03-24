@@ -14,7 +14,7 @@ import 'package:waiter_app/utils/dimensions.dart';
 import 'package:waiter_app/widgets/app_icon.dart';
 import 'package:waiter_app/widgets/big_text.dart';
 import 'package:waiter_app/providers/cartProvider.dart';
-
+import 'package:waiter_app/widgets/small_text.dart';
 
 class CartPage extends StatefulWidget {
   final String URL_BASE = Config.URL_BASE;
@@ -27,7 +27,6 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<Cart> _cartList = [];
 
-
   Widget _item_map() {
     if (_cartList.isNotEmpty) {
       return ListView.builder(
@@ -39,17 +38,23 @@ class _CartPageState extends State<CartPage> {
         },
       );
     } else {
-      return const Center(
-        child: Text("No items in cart"),
+      return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                "${widget.URL_BASE}/images/empty_cart.png",
+                height: MediaQuery.of(context).size.height * 0.22,
+              ),
+              SmallText(text: "No items in cart.", size: Dimensions.font16,)
+            ],
+          ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Consumer<CartService>(builder: (_, cartService, __) {
       _cartList = cartService.getCart();
 
@@ -94,24 +99,38 @@ class _CartPageState extends State<CartPage> {
                         onTap: () {
                           Get.back();
                         },
-                        child:
-                        Stack(
+                        child: Stack(
                           children: [
-                            AppIcon(icon: Icons.shopping_cart_outlined,iconColor: Colors.white,
+                            AppIcon(
+                              icon: Icons.shopping_cart_outlined,
+                              iconColor: Colors.white,
                               backgroundColor: AppColors.mainColor,
-                              size: Dimensions.icon40,),
-                            cartService.getTotalQuantity() >= 1 ?
-                            const Positioned(
-                                top:0,
-                                right:0,
-                                child: AppIcon(icon: Icons.circle, size:20, iconColor: Colors.transparent, backgroundColor: Colors.white,)
-                            ):Container(),
-                            cartService.getTotalQuantity() >= 1 ?
-                            Positioned(
-                                top:3,
-                                right:3,
-                                child: Center(child: BigText(text: cartService.getTotalQuantity().toInt().toString(), size: 10, color: Colors.black))
-                            ):Container(),
+                              size: Dimensions.icon40,
+                            ),
+                            cartService.getTotalQuantity() >= 1
+                                ? const Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: AppIcon(
+                                      icon: Icons.circle,
+                                      size: 20,
+                                      iconColor: Colors.transparent,
+                                      backgroundColor: Colors.white,
+                                    ))
+                                : Container(),
+                            cartService.getTotalQuantity() >= 1
+                                ? Positioned(
+                                    top: 3,
+                                    right: 3,
+                                    child: Center(
+                                        child: BigText(
+                                            text: cartService
+                                                .getTotalQuantity()
+                                                .toInt()
+                                                .toString(),
+                                            size: 10,
+                                            color: Colors.black)))
+                                : Container(),
                           ],
                         )),
                   ],
@@ -150,7 +169,7 @@ class _CartPageState extends State<CartPage> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                        BorderRadius.circular(Dimensions.radius20)),
+                            BorderRadius.circular(Dimensions.radius20)),
                     child: Row(
                       children: [
                         BigText(
@@ -173,7 +192,7 @@ class _CartPageState extends State<CartPage> {
                     decoration: BoxDecoration(
                         color: AppColors.mainColor,
                         borderRadius:
-                        BorderRadius.circular(Dimensions.radius20)),
+                            BorderRadius.circular(Dimensions.radius20)),
                   ),
                 )
               ],

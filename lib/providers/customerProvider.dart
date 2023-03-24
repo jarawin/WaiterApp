@@ -1,25 +1,36 @@
 
 import 'package:flutter/material.dart';
-import 'package:waiter_app/models/customer.dart';
-
 
 class CustomerProvider with ChangeNotifier {
   bool _isLogin = false;
-  Customer? _customer;
+  String _userId = "";
+  String _phone = "";
+  int _point = 0;
 
-  Customer? get customer => _customer;
   bool get isLogin => _isLogin;
+  String get userId => _userId;
+  String get phone => _phone;
+  int get point => _point;
 
 
-  void login(String userId, String phone) {
-    _customer = Customer(userId: userId, phone: phone);
-    // _customer = Customer(userId: userId, phone: phone, point: point);
+  void login(String userId, String phone, int point) {
+    print("login: $userId, $phone, $point");
+
+    _userId = userId;
+    _phone = phone;
+    _point = point;
+
+    print("after login: $_userId, $_phone, $_point");
     _isLogin = true;
     notifyListeners();
   }
 
   void logout() {
-    _customer = null;
+    print("before logout: $_userId, $_phone, $_point");
+    _userId = "";
+    _phone = "";
+    _point = 0;
+    _isLogin = false;
     notifyListeners();
   }
 }

@@ -64,15 +64,27 @@ class _CartPageState extends State<CartPage> {
 
       Future<void> addOrderToServer() async {
         final response = await http.post(
-          Uri.parse(widget.URL_BASE),
+          Uri.parse("${widget.URL_BASE}/cart/add"),
           headers: {'Content-Type': 'application/json'},
-          body: json.encode(_cartList),
+          // body: json.encode(_cartList),
         );
 
-        if (response.statusCode == 200) {
-          print('Data successfully posted');
+
+
+
+        if (response.statusCode == 200 || true) {
+          Get.snackbar(
+            "Success",
+            "Order placed successfully",
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+          );
           cartService.clearCart();
-          print('Clear cart success');
+          Navigator.pushNamed(context, '/home');
+
+          print('Data successfully posted');
         } else {
           print('Failed to post data: ${response.statusCode}');
         }
@@ -182,24 +194,6 @@ class _CartPageState extends State<CartPage> {
                         ),
                       ],
                     )),
-                GestureDetector(
-                  onTap: () {
-                    cartService.checksubPoint(cartService.getTotalPrice());//addOrderToServer();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Dimensions.width20,
-                        vertical: Dimensions.height20),
-                    child: BigText(
-                      text: "Order by point",
-                      color: Colors.white,
-                    ),
-                    decoration: BoxDecoration(
-                        color: AppColors.mainColor,
-                        borderRadius:
-                        BorderRadius.circular(Dimensions.radius20)),
-                  ),
-                ),
                 GestureDetector(
                   onTap: () {
                     addOrderToServer();

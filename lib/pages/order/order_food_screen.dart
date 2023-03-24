@@ -5,8 +5,12 @@ class OrderFood extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('หน้าออเดอร์ที่สั่ง'),
+    return  Center(
+      child: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/home');
+          },
+          child: Text('หน้าออเดอร์ที่สั่ง')),
     );
   }
 }

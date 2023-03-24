@@ -1,3 +1,18 @@
+// ***********************************************************************
+// This file contains the implementation of the customer login page
+// for a mobile application using the Flutter framework.
+// The page allows customers to login using their phone number
+// and an OTP (One-Time Password) code. The page uses the HTTP protocol
+// to communicate with the backend server, which sends the OTP code to
+// the customer's phone number. The page also uses the Provider package
+// for state management. The file defines a stateful widget that has
+// different UI elements for the different states of the login process,
+// such as requesting the OTP code and confirming it.
+// The UI elements include a logo, text fields for entering the phone number
+// and OTP code, buttons for sending and confirming the OTP code,
+// and a bottom navigation bar that displays the application's copyright notice.
+// ***********************************************************************
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -124,6 +139,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       showSnackBar("Error: ${error.toString()}");
     }
   }
+
   Future<void> confirmOtp() async {
     if (!isOtpValid()) {
       showSnackBar("Invalid OTP");
@@ -169,7 +185,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       showSnackBar("Error: ${error.toString()}");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

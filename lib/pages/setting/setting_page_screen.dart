@@ -1,5 +1,24 @@
 // ignore_for_file: must_be_immutable
 
+// ***********************************************************************
+// This is a Flutter file for the "Setting Page" of a mobile app.
+// It imports necessary packages, including flutter/material.dart,
+// http/http.dart, provider.dart, and defines a SettingPage widget.
+//
+// The widget contains a Consumer widget that listens to changes to
+// a CustomerProvider object and updates the page accordingly.
+// It displays the user's profile picture, user ID, phone number,
+// and current point balance. Additionally, it includes a logout button
+// at the bottom of the page.
+//
+// The substringWithEllipsis function is defined to allow for the user ID
+// to be displayed in an abbreviated format if it exceeds a certain length.
+//
+// The overall structure of the widget is a Scaffold containing an AppBar
+// with a title, and a Container that displays the user information
+// and logout button in a column format.
+// ***********************************************************************
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:waiter_app/providers/customerProvider.dart';

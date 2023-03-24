@@ -14,7 +14,6 @@ import 'package:waiter_app/providers/foodProvider.dart';
 
 import 'package:waiter_app/utils/colors.dart';
 
-
 void main() {
   runApp(MultiProvider(
     providers: [
@@ -27,13 +26,13 @@ void main() {
       initialRoute: '/',
       routes: {
         '/home': (context) => const WaiterApp(),
-        '/point': (context) => PointPage(),
+        '/point': (context) => const PointPage(),
         '/order': (context) => const OrderFood(),
         '/waiter': (context) => const CallWaiter(),
         '/setting': (context) => const SettingPage(),
       },
-      home: const WaiterApp(),
-      // home: const CustomerLoginPage(),
+      // home: const WaiterApp(),
+      home: const CustomerLoginPage(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
@@ -41,7 +40,6 @@ void main() {
     ),
   ));
 }
-
 
 class WaiterApp extends StatefulWidget {
   const WaiterApp({Key? key}) : super(key: key);
@@ -55,7 +53,7 @@ class _WaiterAppState extends State<WaiterApp> {
 
   final _pages = [
     {'page': const HomePage(), 'title': 'Home', 'icon': Icons.home},
-    {'page':  PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
+    {'page': const PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
     {
       'page': const OrderFood(),
       'title': 'Order',

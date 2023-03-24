@@ -7,16 +7,6 @@ import "package:waiter_app/models/food.dart";
 class CartService extends ChangeNotifier {
   final List<Cart> _cart = [];
   List<Cart> get cart => _cart;
-  bool _isLogin = false;
-
-  getIsLogin() {
-    return _isLogin;
-  }
-
-  setIsLogin(bool isLogin) {
-    _isLogin = isLogin;
-    notifyListeners();
-  }
 
   void addToCart(Food food, int quantity) {
     if (_cart.any((element) => element.food.id == food.id)) {
@@ -101,7 +91,7 @@ class CartService extends ChangeNotifier {
         _cart.insert(index, Cart(food: c.food, quantity: c.quantity - 1));
         Get.closeAllSnackbars();
         Get.snackbar(
-          "Food decreament",
+          "Food decrement",
           "you have decreased the quantity of ${food.name} to the cart (${c.quantity - 1})",
           snackPosition: SnackPosition.TOP,
           duration: const Duration(milliseconds: 900),

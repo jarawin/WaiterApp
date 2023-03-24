@@ -1,4 +1,3 @@
-
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +40,6 @@ void main() {
   ));
 }
 
-
 class WaiterApp extends StatefulWidget {
   const WaiterApp({Key? key}) : super(key: key);
 
@@ -55,7 +53,11 @@ class _WaiterAppState extends State<WaiterApp> {
   final _pages = [
     {'page': const HomePage(), 'title': 'Home', 'icon': Icons.home},
     {'page': const PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
-    {'page': const OrderFood(), 'title': 'Order', 'icon': Icons.restaurant_menu},
+    {
+      'page': const OrderFood(),
+      'title': 'Order',
+      'icon': Icons.restaurant_menu
+    },
     {'page': const CallWaiter(), 'title': 'Waiter', 'icon': Icons.room_service},
     {'page': const SettingPage(), 'title': 'Setting', 'icon': Icons.settings},
   ];

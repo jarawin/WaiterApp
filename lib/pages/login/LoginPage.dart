@@ -82,11 +82,10 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
     try {
       var response = await http.post(
-        Uri.parse('http://localhost:5390/otp/request'),
+        Uri.parse('$_baseUrl/otp/request'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phone': phone}),
       );
-
 
       var data = jsonDecode(response.body);
 
@@ -140,7 +139,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
     try {
       var response = await http.post(
-        Uri.parse('http://localhost:5390/otp/confirm'),
+        Uri.parse('$_baseUrl/otp/confirm'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'otp': otp,
@@ -149,7 +148,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       );
 
       var data = jsonDecode(response.body);
-      customerProvider.login(data['userId'], data['phone']);
+      customerProvider.login(data['userId'], data['phone'], data['point']);
 
       setState(() {
         quotaSentOTP = 0;
@@ -162,7 +161,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       showSnackBar("Success: ${data['message']}");
 
       Navigator.pushNamed(context, '/home');
-
     } catch (error) {
       setState(() {
         isLoading = false;
@@ -185,27 +183,27 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
             children: [
               SizedBox(height: Dimensions.screenHeight * 0.05),
               SizedBox(
-                height: Dimensions.screenHeight * 0.25,
+                height: Dimensions.screenHeight * 0.35,
                 child: Center(
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
-                    radius: 80.0,
+                    radius: 110.0,
                     child: Image.network("$_baseUrl/images/waiter_app.png"),
                   ),
                 ),
               ),
-
               Container(
-                margin: const EdgeInsets.only(bottom: 5, left: 5),
-                  child: BigText(text: "Welcome", size: 50, color: Colors.black87)
-              ),
+                  margin: const EdgeInsets.only(bottom: 5, left: 5),
+                  child: BigText(
+                      text: "Welcome", size: 50, color: Colors.black87)),
               Container(
                   margin: const EdgeInsets.only(bottom: 30, left: 5),
-                  child: BigText(text: "Easy login with your phone number", color: Colors.black54)
-              ),
-
+                  child: BigText(
+                      text: "Easy login with your phone number",
+                      color: Colors.black54)),
               Container(
-                margin:  EdgeInsets.only(left: Dimensions.height20, right: Dimensions.height20),
+                margin: EdgeInsets.only(
+                    left: Dimensions.height20, right: Dimensions.height20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(Dimensions.radius30),
@@ -222,14 +220,17 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Phone Number',
-                    prefixIcon: const Icon(Icons.phone, color: AppColors.mainColor),
+                    prefixIcon:
+                        const Icon(Icons.phone, color: AppColors.mainColor),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Dimensions.radius30),
-                      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 1.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Dimensions.radius30),
-                      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 1.0),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Dimensions.radius30),
@@ -242,57 +243,73 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                   },
                 ),
               ),
-
               const SizedBox(height: 20),
-
               if (!hasSentOTP)
                 GestureDetector(
                   onTap: phone.isEmpty || isLoading ? null : requestOtp,
                   child: Container(
-                    margin: EdgeInsets.only(left: Dimensions.screenWidth/4.5, right: Dimensions.screenWidth/4.5, top: Dimensions.height20),
-                    height: Dimensions.screenHeight/15,
-
+                    margin: EdgeInsets.only(
+                        left: Dimensions.screenWidth / 4.5,
+                        right: Dimensions.screenWidth / 4.5,
+                        top: Dimensions.height20),
+                    height: Dimensions.screenHeight / 15,
                     decoration: BoxDecoration(
                       color: AppColors.mainColor,
                       borderRadius: BorderRadius.circular(Dimensions.radius30),
                     ),
                     child: isLoading || isRequestingOtp
-                          ? const CircularProgressIndicator(color: Colors.white,) : Center(child: BigText(text: "Request OTP", color: Colors.white, size: Dimensions.font20)),
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Center(
+                            child: BigText(
+                                text: "Send OTP",
+                                color: Colors.white,
+                                size: Dimensions.font20)),
                   ),
                 ),
-
               if (hasSentOTP)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin:  EdgeInsets.only(left: Dimensions.height20, right: Dimensions.height20),
+                      margin: EdgeInsets.only(
+                          left: Dimensions.height20,
+                          right: Dimensions.height20),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(Dimensions.radius30),
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radius30),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.2),
                             spreadRadius: 7,
                             blurRadius: 10,
-                            offset: const Offset(1, 10), // changes position of shadow
+                            offset: const Offset(
+                                1, 10), // changes position of shadow
                           ),
                         ],
                       ),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'OTP',
-                          prefixIcon: const Icon(Icons.key, color: AppColors.mainColor),
+                          prefixIcon:
+                              const Icon(Icons.key, color: AppColors.mainColor),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.radius30),
-                            borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius30),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.radius30),
-                            borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius30),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
                           ),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.radius30),
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius30),
                           ),
                         ),
                         keyboardType: TextInputType.number,
@@ -306,28 +323,86 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                     const SizedBox(height: 20),
                     Container(
                       alignment: Alignment.topRight,
-                      child: Text(
-                          'Waiting for confirm in $waitingTime seconds (Ref: $ref)', style: const TextStyle(color: AppColors.textColor)),
+                      child: quotaSentOTP <= 0
+                          ? Text('Please confirm in $waitingTime s (Ref: $ref)',
+                              style: const TextStyle(color: Colors.grey))
+                          : waitingTime < 240
+                              ? Row(
+                                  // resend otp
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                        'Please confirm in $waitingTime s (Ref: $ref)',
+                                        style: const TextStyle(
+                                            color: Colors.grey)),
+                                    const SizedBox(width: 10),
+                                    GestureDetector(
+                                      onTap: isLoading || isConfirmingOtp
+                                          ? null
+                                          : requestOtp,
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: Dimensions.height10,
+                                            right: Dimensions.height10,
+                                            top: Dimensions.height5,
+                                            bottom: Dimensions.height5),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.yellowColor,
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radius20),
+                                        ),
+                                        child: const Text('Resend ',
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : Text(
+                                  'You can resend in ${waitingTime - 240} s (Ref: $ref)',
+                                  style: const TextStyle(color: Colors.grey)),
                     ),
                     const SizedBox(height: 20),
-
                     GestureDetector(
-                      onTap: otp.isEmpty || isLoading || isConfirmingOtp ? null : confirmOtp,
+                      onTap: otp.isEmpty || isLoading || isConfirmingOtp
+                          ? null
+                          : confirmOtp,
                       child: Container(
-                        margin: EdgeInsets.only(left: Dimensions.screenWidth/4.5, right: Dimensions.screenWidth/4.5, top: Dimensions.height20),
-                        height: Dimensions.screenHeight/15,
-
+                        margin: EdgeInsets.only(
+                            left: Dimensions.screenWidth / 4.5,
+                            right: Dimensions.screenWidth / 4.5,
+                            top: Dimensions.height20),
+                        height: Dimensions.screenHeight / 15,
                         decoration: BoxDecoration(
                           color: AppColors.mainColor,
-                          borderRadius: BorderRadius.circular(Dimensions.radius30),
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radius30),
                         ),
                         child: isLoading || isConfirmingOtp
-                            ? const CircularProgressIndicator(color: Colors.white,) : Center(child: BigText(text: "Confirm OTP", color: Colors.white, size: Dimensions.font20)),
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Center(
+                                child: BigText(
+                                    text: "Login",
+                                    color: Colors.white,
+                                    size: Dimensions.font20)),
                       ),
                     ),
                   ],
                 ),
             ],
+          ),
+        ),
+      ),
+      // copy right
+      bottomNavigationBar: Container(
+        height: 80,
+        color: Colors.white,
+        child: const Center(
+          child: Text(
+            "Waiter App © 2023",
+            style: TextStyle(color: Colors.grey),
           ),
         ),
       ),

@@ -76,10 +76,13 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   }
 
   bool isPhoneNumberValid() {
+    if (phone.length != 10) return false;
     return RegExp(r"^\d{10}$").hasMatch(phone);
   }
 
   bool isOtpValid() {
+    if (otp.length != 6) return false;
+    if (ref.isEmpty) return false;
     return RegExp(r"^\d{6}$").hasMatch(otp);
   }
 
@@ -111,6 +114,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
         showSnackBar("Error: ${data['message']}");
       } else {
+        print("got ${data['ref']}");
         setState(() {
           ref = data['ref'];
           quotaSentOTP = data['quotaSentOTP'];
@@ -152,6 +156,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     });
 
     try {
+      print("otp $otp, ref $ref");
       var response = await http.post(
         Uri.parse('$_baseUrl/otp/confirm'),
         headers: {'Content-Type': 'application/json'},
@@ -260,29 +265,32 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
               ),
               const SizedBox(height: 20),
               if (!hasSentOTP)
-                GestureDetector(
-                  onTap: phone.isEmpty || isLoading ? null : requestOtp,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        left: Dimensions.screenWidth / 4.5,
-                        right: Dimensions.screenWidth / 4.5,
-                        top: Dimensions.height20),
-                    height: Dimensions.screenHeight / 15,
-                    decoration: BoxDecoration(
-                      color: AppColors.mainColor,
-                      borderRadius: BorderRadius.circular(Dimensions.radius30),
-                    ),
-                    child: isLoading || isRequestingOtp
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : Center(
-                            child: BigText(
-                                text: "Send OTP",
-                                color: Colors.white,
-                                size: Dimensions.font20)),
-                  ),
-                ),
+                isLoading || isRequestingOtp
+                    ? const Center(
+                      child:  CircularProgressIndicator(
+                          color: AppColors.mainColor,
+                        ),
+                    )
+                    : GestureDetector(
+                        onTap: phone.isEmpty || isLoading ? null : requestOtp,
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              left: Dimensions.screenWidth / 4.5,
+                              right: Dimensions.screenWidth / 4.5,
+                              top: Dimensions.height20),
+                          height: Dimensions.screenHeight / 15,
+                          decoration: BoxDecoration(
+                            color: AppColors.mainColor,
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius30),
+                          ),
+                          child: Center(
+                              child: BigText(
+                                  text: "Send OTP",
+                                  color: Colors.white,
+                                  size: Dimensions.font20)),
+                        ),
+                      ),
               if (hasSentOTP)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,27 +390,29 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                       onTap: otp.isEmpty || isLoading || isConfirmingOtp
                           ? null
                           : confirmOtp,
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            left: Dimensions.screenWidth / 4.5,
-                            right: Dimensions.screenWidth / 4.5,
-                            top: Dimensions.height20),
-                        height: Dimensions.screenHeight / 15,
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor,
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radius30),
-                        ),
-                        child: isLoading || isConfirmingOtp
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Center(
-                                child: BigText(
-                                    text: "Login",
-                                    color: Colors.white,
-                                    size: Dimensions.font20)),
-                      ),
+                      child: isLoading || isConfirmingOtp
+                          ? const Center(
+                            child:  CircularProgressIndicator(
+                                color: AppColors.mainColor,
+                              ),
+                          )
+                          : Container(
+                              margin: EdgeInsets.only(
+                                  left: Dimensions.screenWidth / 4.5,
+                                  right: Dimensions.screenWidth / 4.5,
+                                  top: Dimensions.height20),
+                              height: Dimensions.screenHeight / 15,
+                              decoration: BoxDecoration(
+                                color: AppColors.mainColor,
+                                borderRadius:
+                                    BorderRadius.circular(Dimensions.radius30),
+                              ),
+                              child: Center(
+                                  child: BigText(
+                                      text: "Login",
+                                      color: Colors.white,
+                                      size: Dimensions.font20)),
+                            ),
                     ),
                   ],
                 ),

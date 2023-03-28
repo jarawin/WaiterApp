@@ -2,4 +2,7 @@
 
 class Config {
   static const String URL_BASE = "https://waiterapp.jarawin.com";
+  // static const String URL_BASE = "http://localhost:1234";
 }
+
+

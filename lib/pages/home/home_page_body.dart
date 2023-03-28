@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:waiter_app/models/food.dart';
 import 'package:waiter_app/providers/foodProvider.dart';
+import 'package:waiter_app/utils/colors.dart';
 import 'package:waiter_app/utils/config.dart';
 import 'package:waiter_app/pages/home/food/popular_food_list.dart';
 import 'package:waiter_app/pages/home/food/recommended_food_list.dart';
@@ -54,7 +55,7 @@ class _HomePageBodyState extends State<HomePageBody> {
       );
     } else {
       return const Center(
-        child: CircularProgressIndicator(),
+        child: Center(child: CircularProgressIndicator(color: AppColors.mainColor,)),
       );
     }
   }

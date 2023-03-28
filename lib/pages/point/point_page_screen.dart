@@ -13,8 +13,6 @@ class PointPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CartService cartService = CartService();
-    int currentPoint = cartService.getcurrentPoint();
     return Consumer<CustomerProvider>(builder: (_, customerProvider, __) {
       return Scaffold(
         appBar: AppBar(
@@ -25,7 +23,7 @@ class PointPage extends StatelessWidget {
             color: Colors.white,
             size: Dimensions.font20,
           ),
-          backgroundColor: Color(0xFF89dad0),
+          backgroundColor: AppColors.mainColor,
         ),
         body: Center(
           child: Column(
@@ -36,9 +34,9 @@ class PointPage extends StatelessWidget {
                 height: 190,
                 alignment: Alignment.center,
                 child: Text(
-                  "${currentPoint}", //${Customer.cus[0].point}
-                  style: TextStyle(
-                    color: Colors.blueAccent[200],
+                  "${customerProvider.point}", //${Customer.cus[0].point}
+                  style: const TextStyle(
+                    color: AppColors.yellowColor,
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
@@ -46,7 +44,7 @@ class PointPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100.0),
                   border: Border.all(
-                    color: Color(0xff7E89FC),
+                    color: AppColors.mainColor,
                     style: BorderStyle.solid,
                     width: 25,
                   ),
@@ -56,7 +54,6 @@ class PointPage extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 'Phone Number: ${customerProvider.phone}', //${Customer.cus[0].phone}
-
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey[700],

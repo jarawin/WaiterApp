@@ -11,10 +11,19 @@ class Cart {
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(
-      food: json['food'],
+      food: Food.fromJson(json['food']),
       quantity: json['quantity'],
     );
   }
+
+  // Add this method to convert the Cart object to a JSON-encodable Map
+  Map<String, dynamic> toJson() {
+    return {
+      'food': food.toJson(),
+      'quantity': quantity,
+    };
+  }
+
 
   getSumPrice() {
     return quantity * food.price;

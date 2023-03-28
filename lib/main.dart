@@ -27,7 +27,7 @@ void main() {
       routes: {
         '/home': (context) => const WaiterApp(),
         '/point': (context) => const PointPage(),
-        '/order': (context) => const OrderFood(),
+        '/order': (context) => const OrderPage(),
         '/waiter': (context) => const CallWaiter(),
         '/setting': (context) => const SettingPage(),
       },
@@ -55,7 +55,7 @@ class _WaiterAppState extends State<WaiterApp> {
     {'page': const HomePage(), 'title': 'Home', 'icon': Icons.home},
     {'page': const PointPage(), 'title': 'Point', 'icon': Icons.credit_score},
     {
-      'page': const OrderFood(),
+      'page': const OrderPage(),
       'title': 'Order',
       'icon': Icons.restaurant_menu
     },
